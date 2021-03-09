@@ -1,21 +1,17 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const routes = require('./Routes/index');
 
 const app = express();
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.json({extended: false}));
 
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:27017/inventorymanagement";
+const url = 'mongodb://localhost:27017/invenoryManagement';
+mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true}).then(
+    () => { console.log('DB connected') },
+    err => { console.error( err )}
+);
 
-MongoClient.connect(url, 
-    {useNewUrlParser: true,
-     useUnifiedTopology: true
-    },(err,db) => {
-    if(err) throw err;
-    console.log('Database connected');
-    db.close();
-});
 
 app.use('/', routes);
 
@@ -26,5 +22,5 @@ app.use('/', routes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`App is listening on ${PORT}`);
+    console.log(`App is listening on port ${PORT}`);
 })
