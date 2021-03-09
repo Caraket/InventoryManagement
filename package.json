@@ -1,0 +1,31 @@
+{
+  "name": "inventorymanagement",
+  "version": "1.0.0",
+  "description": "An inventory management system to keep track of inventory in a store or business.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "watch": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caraket/InventoryManagement.git"
+  },
+  "keywords": [
+    "Inventory",
+    "management",
+    "system"
+  ],
+  "author": "Cory Paulley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Caraket/InventoryManagement/issues"
+  },
+  "homepage": "https://github.com/Caraket/InventoryManagement#readme",
+  "dependencies": {
+    "config": "^3.3.6",
+    "express": "^4.17.1",
+    "mongoose": "^5.11.19",
+    "nodemon": "^2.0.7"
+  }
+}
