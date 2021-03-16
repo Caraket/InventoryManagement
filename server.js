@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json({extended: false}));
 
-const url = 'mongodb://localhost:27017/invenoryManagement';
+const url = 'mongodb://localhost:27017/inventoryManagement';
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true}).then(
     () => { console.log('DB connected') },
     err => { console.error( err )}
