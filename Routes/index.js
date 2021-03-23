@@ -1,5 +1,6 @@
 const express = require('express');
 const Item = require('../Models/items');
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 const router = express.Router();
 
@@ -14,7 +15,7 @@ router.get('/', (req, res) => {
 // @Route   GET /items
 // @desc    Return items in the database
 // @access  Public
-router.get('/items', async (req, res) => {
+router.get('/items', ensureAuthenticated, async (req, res) => {
     try {
         const item = await Item.find().sort();
         res.json(item);
@@ -29,7 +30,7 @@ router.get('/items', async (req, res) => {
 // @desc    Return one item in the database
 // @access  Public
 
-router.get('/item/:id', async (req, res) => {
+router.get('/item/:id', ensureAuthenticated, async (req, res) => {
     try {
         const item = await Item.findById(req.params.id);
 
@@ -49,7 +50,7 @@ router.get('/item/:id', async (req, res) => {
 // @desc    Add an item to the database
 // @access  Public
 
-router.post('/additem', (req, res) => {
+router.post('/additem', ensureAuthenticated, (req, res) => {
     let item = new Item(req.body);
     item.save()
        .then(item => {
@@ -65,7 +66,7 @@ router.post('/additem', (req, res) => {
 // @desc    Update an item
 // @access  Public
 
-router.put('/item/:id', async (req, res) => {
+router.put('/item/:id', ensureAuthenticated, async (req, res) => {
     try {
         const conditions = { _id: req.params.id };
         
@@ -83,7 +84,7 @@ router.put('/item/:id', async (req, res) => {
     }
 });
 
-router.delete("/item/:id", (req, res) => {
+router.delete("/item/:id", ensureAuthenticated, (req, res) => {
     Item
     .findByIdAndRemove(req.params.id)
     .exec()
