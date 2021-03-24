@@ -42,7 +42,9 @@ router.post('/register', (req, res) => {
                 const newUser = new User({
                     firstName,
                     lastName,
-                    email,
+                    username,
+                    password,
+                    email                    
                 });
 
                 bcrypt.genSalt(10, (err, salt) => {
@@ -62,6 +64,21 @@ router.post('/register', (req, res) => {
         }) 
     }
 
+});
+
+router.post('/login', (req, res, next) => {
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/users/login',
+        failureFlash: true
+    })(req, res, next);
+});
+
+
+router.get('/logout', (req, res) => {
+    req.logout();
+    req.flash('success_msg', 'You are logged out');
+    res.redirect('/users/login');
 });
 
 module.exports = router;
