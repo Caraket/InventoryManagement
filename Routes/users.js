@@ -5,17 +5,25 @@ const bcrypt = require('bcryptjs');
 const User = require('../Models/User');
 
 
-const { forwardAuthenticated } = require('../config/auth');
+const { forwardAuthenticated, ensureAuthenticated } = require('../config/auth');
+
+// Dashboard Page
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+    res.send('Dashboard!');
+});
+
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => {
     res.send('login');
 });
 
+// Register Page
 router.get('/register', forwardAuthenticated, (req, res) => {
     res.send('register');
 });
 
+// Register Post
 router.post('/register', (req, res) => {
     const { firstName, lastName, username, email, password, password2 } = req.body;
     let errors = [];
@@ -68,14 +76,24 @@ router.post('/register', (req, res) => {
 
 });
 
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/users/login'
-    })(req, res, next);
-});
+// Login Post
+// router.post('/login', (req, res, next) => {
+//     passport.authenticate('local', {
+//         successRedirect: '/users/dashboard',
+//         failureRedirect: '/users/login',
+//         failureFlash: true
+//     })(req, res, next);
+// });
+
+router.post('/login', 
+passport.authenticate('local', 
+{    successRedirect: '/users/dashboard',
+     failureRedirect: '/users/login',
+    })
+);
 
 
+// Logout Post
 router.post('/logout', (req, res) => {
     req.logout();
     res.redirect('/users/login');
