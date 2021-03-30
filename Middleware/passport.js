@@ -1,6 +1,5 @@
-const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const User = require('../Models/User');
 
 module.exports = passport => {
@@ -13,8 +12,17 @@ module.exports = passport => {
             User.findOne({ email: email })
             .then( user => {
                 if(!user) {
-                    return done(null, false, {message: 'Incorrect Credentials!'})
+                    return done(null, false, {message: 'Invalid Credentials!'})
                 }
+
+                bcrypt.compare(password, user.password, (err, isMatch) => {
+                    if(err) throw err;
+                    if(isMatch) {
+                        return done(null, user);
+                    } else{
+                        return done(null, false, {message: 'Invalid Credentials'})
+                    }
+                })
                 }
             );
         }

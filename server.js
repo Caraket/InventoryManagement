@@ -1,10 +1,10 @@
 const express = require('express');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const session = require('express-session');
 const routes = require('./Routes/index');
-const userRoutes = require('./Routes/users');
+const userRoutes = require('./Routes/users'); 
 
 const app = express();
 
@@ -19,6 +19,7 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+require('./Middleware/passport')(passport);
 
 const url = 'mongodb://localhost:27017/inventoryManagement';
 mongoose.connect(url, {useUnifiedTopology: true, useNewUrlParser: true}).then(

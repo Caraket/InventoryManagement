@@ -4,6 +4,7 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const User = require('../Models/User');
 
+
 const { forwardAuthenticated } = require('../config/auth');
 
 // Login Page
@@ -32,6 +33,7 @@ router.post('/register', (req, res) => {
     }
 
     if(errors.length > 0) {
+        console.error(errors);
         res.send('Errors > 0');
     } else{
         User.findOne({ email: email}).then(user => {
@@ -69,15 +71,13 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/',
-        failureRedirect: '/users/login',
-        failureFlash: true
+        failureRedirect: '/users/login'
     })(req, res, next);
 });
 
 
-router.get('/logout', (req, res) => {
+router.post('/logout', (req, res) => {
     req.logout();
-    req.flash('success_msg', 'You are logged out');
     res.redirect('/users/login');
 });
 
