@@ -9,18 +9,18 @@ const { forwardAuthenticated, ensureAuthenticated } = require('../config/auth');
 
 // Dashboard Page
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
-    res.send('Dashboard!');
+    res.status(200).send('Dashboard!');
 });
 
 
 // Login Page
 router.get('/login', forwardAuthenticated, (req, res) => {
-    res.send('login');
+    res.status(200).send('login');
 });
 
 // Register Page
 router.get('/register', forwardAuthenticated, (req, res) => {
-    res.send('register');
+    res.status(200).send('register');
 });
 
 // Register Post
@@ -42,12 +42,12 @@ router.post('/register', (req, res) => {
 
     if(errors.length > 0) {
         console.error(errors);
-        res.send('Errors > 0');
+        res.status(500).send('Errors > 0');
     } else{
         User.findOne({ email: email}).then(user => {
             if(user) {
                 errors.push({msg: 'Email already exists'});
-                res.send('register');
+                res.status(302).send('register');
             } else{
                 const newUser = new User({
                     firstName,
@@ -63,7 +63,7 @@ router.post('/register', (req, res) => {
                         newUser.password = hash;
                         newUser.save()
                         .then(user => {
-                            res.send('New User saved');
+                            res.status(201).send('New User saved');
                         })
                         .catch(err => {
                             console.error(err.message);
@@ -76,15 +76,7 @@ router.post('/register', (req, res) => {
 
 });
 
-// Login Post
-// router.post('/login', (req, res, next) => {
-//     passport.authenticate('local', {
-//         successRedirect: '/users/dashboard',
-//         failureRedirect: '/users/login',
-//         failureFlash: true
-//     })(req, res, next);
-// });
-
+// Login POST route
 router.post('/login', 
 passport.authenticate('local', 
 {    successRedirect: '/users/dashboard',
@@ -93,10 +85,10 @@ passport.authenticate('local',
 );
 
 
-// Logout Post
+// Logout Post route
 router.post('/logout', (req, res) => {
     req.logout();
-    res.redirect('/users/login');
+    res.status(200).redirect('/users/login');
 });
 
 module.exports = router;

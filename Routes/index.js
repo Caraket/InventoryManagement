@@ -38,7 +38,7 @@ router.get('/item/:id', ensureAuthenticated, async (req, res) => {
             return res.status(400).json({msg: 'Item not found'});
         }
 
-        res.json(item);
+        res.status(302).json(item);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server Error');
