@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
+const cors = require('cors');
 const routes = require('./Routes/index');
 const userRoutes = require('./Routes/users'); 
 
@@ -16,6 +17,13 @@ app.use(session({
     saveUninitialized: true,
     cookie: {secure: true}
 }));
+
+app.use(
+    cors({
+        origin: "http://localhost:3000",
+        credentials: true
+    })
+)
 
 app.use(passport.initialize());
 app.use(passport.session());

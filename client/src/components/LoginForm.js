@@ -1,34 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import Axios from 'axios';
 
-export default function LoginForm({ Login, error }) {
-    const [details, setDetails] = useState({name: "", email: "", password: ""});
-
-    const submitHandler = e => {
-        e.preventDefault();
-
-        Login(details);
-    }
-
-
+export default function LoginForm() {
+    const [user, setUser] = useState({name: "", email: ""});
+    const [error, setError] = useState("");
+    const [loginUsername, setLoginUsername] = useState("");
+    const [loginPassword, setLoginPassword] = useState("");
+    const [data, setData] = useState(null);
+    
+    const login = () => {
+        Axios({
+          method: "POST",
+          data: {
+            username: loginUsername,
+            password: loginPassword,
+          },
+          withCredentials: true,
+          url: "http://localhost:5000/users/login",
+        }).then((res) => setData(res));
+      }
+    
     return (
-        <form onSubmit={submitHandler} >
-            <div className="form-inner">
-                <h2>Login</h2>
-                {(error !== "") ? (<div className="error">{error}</div>) : ""}
-                <div className="form-group">
-                    <label htmlFor="name">Name:</label>
-                    <input type="text" name="name" id="name" onChange={ e => setDetails({...details, name: e.target.value})} value={details.name}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="email">Email:</label>
-                    <input type="email" name="email" id="email" onChange={ e => setDetails({...details, email: e.target.value})} value={details.email}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password:</label>
-                    <input type="password" name="password" id="password" onChange={ e => setDetails({...details, password: e.target.value})} value={details.password}/>
-                </div>
-                <input type="submit" value="login"/>
-            </div>
-        </form>
+        
+        <div>
+        <h1>Login</h1>
+        <input
+          placeholder="username"
+          onChange={(e) => setLoginUsername(e.target.value)}
+        />
+        <input
+          placeholder="password"
+          onChange={(e) => setLoginPassword(e.target.value)}
+        />
+        <button onClick={login}>Submit</button>
+      </div>
+        
     )
 }

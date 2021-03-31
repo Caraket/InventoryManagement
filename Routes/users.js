@@ -85,6 +85,8 @@ passport.authenticate('local',
 );
 
 
+
+
 // Logout Post route
 router.post('/logout', (req, res) => {
     req.logout();
