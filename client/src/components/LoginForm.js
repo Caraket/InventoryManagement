@@ -17,7 +17,7 @@ export default function LoginForm() {
           },
           withCredentials: true,
           url: "http://localhost:5000/users/login",
-        }).then((res) => setData(res));
+        }).then((res) => console.log(res));
       }
     
     return (
