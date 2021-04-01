@@ -2,13 +2,14 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
+const bodyParser = require('body-parser');
 const User = require('../Models/User');
 
 
 const { forwardAuthenticated, ensureAuthenticated } = require('../config/auth');
 
 // Dashboard Page
-router.get('/dashboard', ensureAuthenticated, (req, res) => {
+router.get('/dashboard', (req, res) => {
     res.status(200).send('Dashboard!');
 });
 
@@ -77,13 +78,38 @@ router.post('/register', (req, res) => {
 });
 
 // Login POST route
-router.post('/login', 
-passport.authenticate('local', 
-{    successRedirect: '/users/dashboard',
-     failureRedirect: '/users/login',
-    })
-);
+// router.post('/login', 
+// passport.authenticate('local', 
+// {    successRedirect: '/users/dashboard',
+//      failureRedirect: '/users/login',
+//     }),
+// );
 
+router.post('/login', passport.authenticate('local'), (req, res, next) => {
+   if( !req.user ) return;
+   const date = new Date();
+   console.log(`User ID: ${req.user._id} logged in at ${date}`);
+   res.json(req.user);
+   next();
+});
+
+
+
+// Get User route
+router.get('/user', (req, res) => {
+    res.send(req.user);
+    console.log(req.user);
+});
+
+router.get('/users', (req, res, next) => {
+    User.find({}, (err, result) => {
+        if(err) {
+            console.log(err);
+        } else {
+            res.json(result);
+        }
+    })
+});
 
 
 

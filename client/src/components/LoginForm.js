@@ -12,12 +12,19 @@ export default function LoginForm() {
         Axios({
           method: "POST",
           data: {
-            username: loginUsername,
+            email: loginUsername,
             password: loginPassword,
           },
           withCredentials: true,
           url: "http://localhost:5000/users/login",
-        }).then((res) => console.log(res));
+        }).then((res) => {
+            console.log(res);
+            setUser(res);
+        }, (error) => {
+            console.log(error);
+        })
+
+
       }
     
     return (
@@ -30,6 +37,7 @@ export default function LoginForm() {
         />
         <input
           placeholder="password"
+          type="password"
           onChange={(e) => setLoginPassword(e.target.value)}
         />
         <button onClick={login}>Submit</button>
