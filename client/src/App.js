@@ -3,6 +3,8 @@ import Axios from 'axios';
 import {BrowserRouter as Router } from 'react-router-dom';
 import LoginForm from './components/LoginForm';
 import GetUser from './components/GetUser';
+import Navbar from './components/NavigationBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import GetUsers from './components/GetUsers';
 
@@ -14,7 +16,7 @@ function App() {
 
   return (
     <div className="App">
-       <GetUsers />
+       <Navbar />
     </div>
   );
 }
