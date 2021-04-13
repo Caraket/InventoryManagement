@@ -14,11 +14,15 @@ export default class PersonList extends React.Component {
         })
     }
 
+
     render() {
         return(
             <ul>
-                {this.state.persons.map(person => <li>{person.firstName + " " + person.lastName}</li>)}
+                {this.state.persons.map(person => <li key={person._id}>{person.firstName + " " + person.lastName} <button>Remove</button></li>)}
             </ul>
         )
     }
 }
+
+
+    
